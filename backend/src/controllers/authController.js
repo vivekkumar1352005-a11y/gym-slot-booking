@@ -2,6 +2,12 @@ import jwt from 'jsonwebtoken';
 import { User } from '../models/User.model.js';
 import { JWT_SECRET } from '../middleware/auth.js';
 
+const serializeUser = (user) => {
+  const userData = user.toObject();
+  delete userData.password;
+  return userData;
+};
+
 const generateToken = (user) => {
   return jwt.sign(
     {
@@ -68,7 +74,7 @@ export const register = async (req, res, next) => {
       success: true,
       message: 'Registration successful',
       token,
-      user,
+      user: serializeUser(user),
     });
   } catch (err) {
     next(err);
@@ -87,7 +93,7 @@ export const login = async (req, res, next) => {
       });
     }
 
-    const user = await User.findOne({ email: email.toLowerCase().trim() });
+    const user = await User.findOne({ email: email.toLowerCase().trim() }).select('+password');
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -111,7 +117,7 @@ export const login = async (req, res, next) => {
       success: true,
       message: 'Login successful',
       token,
-      user,
+      user: serializeUser(user),
     });
   } catch (err) {
     next(err);

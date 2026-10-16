@@ -42,8 +42,6 @@ app.use('/api/admin', adminRoutes);
 
 
 
-
-
 //Error Handler Middleware
 app.use(errorHandler);
 
@@ -51,13 +49,13 @@ app.use(errorHandler);
 await connectDB();
 
 // Auto-seed initial test dataset if empty
-// const { User } = await import('./models/User.model.js');
-// const userCount = await User.countDocuments();
-// if (userCount === 0) {
-//     console.log('⚡ Empty database detected. Auto-seeding initial test dataset...');
-//     const { seedInitialData } = await import('./scripts/seed.js');
-//     await seedInitialData(false);
-// }
+const { User } = await import('./models/User.model.js');
+const userCount = await User.countDocuments();
+
+    console.log('⚡ Empty database detected. Auto-seeding initial test dataset...');
+    const { seedInitialData } = await import('./script/seed.js');
+    await seedInitialData(false);
+
 
 app.listen(PORT, () => {
     console.log(`Gym Slot Booking API running on port ${PORT}`);

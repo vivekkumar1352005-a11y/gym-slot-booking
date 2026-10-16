@@ -9,7 +9,7 @@
   "scripts": {
     "server": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "seed": "node src/scripts/seed.js"
+    "seed": "node src/script/seed.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
