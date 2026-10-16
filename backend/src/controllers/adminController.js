@@ -1,7 +1,7 @@
 
-import { Session } from '../models/Session.js';
-import { Booking } from '../models/Booking.js';
-import { Waitlist } from '../models/Waitlist.js';
+import { Session } from '../models/Session.model.js';
+import { Booking } from '../models/Booking.model.js';
+import { Waitlist } from '../models/Waitlist.model.js';
 
 // 1. Get all attendees and waitlist members for a session
 export const getSessionAttendees = async (req, res, next) => {

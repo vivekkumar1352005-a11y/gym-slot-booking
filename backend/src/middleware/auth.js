@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { User } from '../models/User.js';
+import { User } from '../models/User.model.js';
 
 export const JWT_SECRET = process.env.JWT_SECRET || 'super-secret-gym-jwt-key-2026-production-ready';
 
