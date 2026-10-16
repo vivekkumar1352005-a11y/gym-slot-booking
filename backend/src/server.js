@@ -2,6 +2,13 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import errorHandler from './middleware/errorHandler';
+import { connectDB } from './config/db.js';
+
+import authRoutes from './routes/authRoutes.js';
+import sessionRoutes from './routes/sessionRoutes.js';
+import bookingRoutes from './routes/bookingRoutes.js';
+import waitlistRoutes from './routes/waitlistRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 
 dotenv.config();
 
@@ -27,6 +34,10 @@ app.get('/api/health', (req, res) => {
 
 //Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/sessions', sessionRoutes);
+app.use('/api/bookings', bookingRoutes);
+app.use('/api/waitlist', waitlistRoutes);
+app.use('/api/admin', adminRoutes);
 
 
 
@@ -35,6 +46,18 @@ app.use('/api/auth', authRoutes);
 
 //Error Handler Middleware
 app.use(errorHandler);
+
+
+await connectDB();
+
+// Auto-seed initial test dataset if empty
+const { User } = await import('./models/User.js');
+const userCount = await User.countDocuments();
+if (userCount === 0) {
+    console.log('⚡ Empty database detected. Auto-seeding initial test dataset...');
+    const { seedInitialData } = await import('./scripts/seed.js');
+    await seedInitialData(false);
+}
 
 app.listen(PORT, () => {
     console.log(`Gym Slot Booking API running on port ${PORT}`);
